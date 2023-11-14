@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Calculator
+  def initialize
+    SecureConnector.new.connect!(nil)
+  end
+
   def add(num1, num2)
     num1 + num2
   end

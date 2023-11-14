@@ -1,9 +1,31 @@
 # frozen_string_literal: true
 
 require './calculator'
+require './secure_connector'
 
 RSpec.describe Calculator do
   let(:calc) { Calculator.new }
+
+  describe '#initialize' do
+    context 'success' do
+      it 'connects to SecureConnector and sets connected attribute' do
+        connector_double = instance_double('SecureConnector', connected: true)
+
+        expect(connector_double).to receive(:connect!).with(nil)
+
+        allow(SecureConnector).to receive(:new).and_return(connector_double)
+
+        expect(SecureConnector).to receive(:new)
+        expect(connector_double.connected).to eq(true)
+
+        calc
+      end
+    end
+  end
+
+  before do
+    allow_any_instance_of(SecureConnector).to receive(:connect!).and_return(nil)
+  end
 
   describe '#add' do
     context 'when given positive numbers' do
